@@ -1,9 +1,30 @@
 from asyncio import run
 from aiogram import Bot, Dispatcher, types, F
-from aiogram.types import FSInputFile
 from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton,FSInputFile
+
+
+def get_product_keyboard():
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text="-", callback_data="decrease"),
+            InlineKeyboardButton(text="1", callback_data="quantity"),
+            InlineKeyboardButton(text="+", callback_data="increase"),
+        ],
+        [
+            InlineKeyboardButton(text="🛒 Savatga qo'shish", callback_data="add_to_cart")
+        ]
+    ])
+
+
+async def Comboplusisit_handler(message: types.Message):
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_18-42-16.jpg")
+    caption = "🥙 <b>Combo Plus Isituvchan (Qora choy)</b>\nNarxi: 16 000 so'm"
+    await message.answer_photo(photo=photo, caption=caption, reply_markup=get_product_keyboard())
+
 
 user_main_keyboard = ReplyKeyboardMarkup(
     keyboard=[
@@ -164,6 +185,62 @@ async def set_handler(message: types.Message):
     photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_16-59-43.jpg")
     await message.answer_photo(photo=photo, reply_markup=user_menu_setlar_keyboard)
 
+async def lavash_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_17-56-30.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_lavash_keyboard)
+
+async def shaurma_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_17-59-41.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_shaurma_keyboard)
+
+async def burger_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_18-02-14.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_burger_keyboard)
+
+async def hotdog_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_18-05-32.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_hotdog_keyboard)
+
+async def ichimlik_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_18-07-32.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_ichimliklar_keyboard)
+
+async def shirinlik_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_18-10-04.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_shirinlik_keyboard)
+
+async def garnir_handler(message: types.Message):
+    if message.text == "Orqaga qaytish":
+        await menu_handler(message)
+        return
+
+    photo = FSInputFile(r"C:\Users\PC_ACER\Downloads\Telegram Desktop\photo_2025-06-19_18-12-40.jpg")
+    await message.answer_photo(photo=photo, reply_markup=user_menu_garnirlar_keyboard)
+
 
 async def main():
     bot = Bot(
@@ -174,8 +251,15 @@ async def main():
 
     dp.message.register(start_handler, Command('start'))
     dp.message.register(menu_handler, F.text == "Menyu")
-    dp.message.register(set_handler,F.text == "Setlar(8)")
-    dp.message.register()
+    dp.message.register(set_handler, F.text.in_(["Setlar(8)", "Orqaga qaytish"]))
+    dp.message.register(lavash_handler, F.text.in_(["Lavash(9)", "Orqaga qaytish"]))
+    dp.message.register(set_handler, F.text.in_(["Shaurma(4)", "Orqaga qaytish"]))
+    dp.message.register(set_handler, F.text.in_(["Burger(4)", "Orqaga qaytish"]))
+    dp.message.register(set_handler, F.text.in_(["Hot-Dog(8)", "Orqaga qaytish"]))
+    dp.message.register(set_handler, F.text.in_(["Ichimliklar(11)", "Orqaga qaytish"]))
+    dp.message.register(set_handler, F.text.in_(["Shirinlik va disertlar(4)", "Orqaga qaytish"]))
+    dp.message.register(set_handler, F.text.in_(["Garnirlar(10)", "Orqaga qaytish"]))
+    dp.message.register(Comboplusisit_handler, F.text == "Combo Plus Isituvchan(Qora choy)")
 
     await dp.start_polling(bot)
 
